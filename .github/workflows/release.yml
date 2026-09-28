@@ -1,0 +1,35 @@
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write # create the GitHub release
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      # The Zoho OAuth client compiled into the binaries.
+      BOZO_CLIENT_ID: ${{ secrets.BOZO_CLIENT_ID }}
+      BOZO_CLIENT_SECRET: ${{ secrets.BOZO_CLIENT_SECRET }}
+      BOZO_CLIENT_DC: ${{ vars.BOZO_CLIENT_DC }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # GoReleaser builds the changelog from history
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Require the OAuth client
+        run: |
+          # A release without them builds fine and fails at every user's login.
+          test -n "$BOZO_CLIENT_ID" && test -n "$BOZO_CLIENT_SECRET" && test -n "$BOZO_CLIENT_DC" \
+            || { echo "::error::set secrets BOZO_CLIENT_ID, BOZO_CLIENT_SECRET and variable BOZO_CLIENT_DC"; exit 1; }
+      - uses: goreleaser/goreleaser-action@v6
+        with:
+          version: "~> v2"
+          args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,6 @@
+{
+  "data": [
+    {"sender": {"name": "Bob", "id": "2"}, "id": "m2", "time": 1790586900000, "type": "text", "content": {"text": "Thanks, checking now"}},
+    {"sender": {"name": "Alice", "id": "1"}, "id": "m1", "time": 1790586720000, "type": "text", "content": {"text": "Deploy of 3.2 is done"}}
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "channels": [
+    {"chat_id": "CT_1", "name": "engineering", "unique_name": "engineering", "joined": true, "total_message_count": "1349", "unread_message_count": 2, "unread_time": "2026-09-28T09:12:00+02:00"},
+    {"chat_id": "CT_2", "name": "random", "unique_name": "random", "joined": true, "total_message_count": "40", "unread_message_count": 0}
+  ],
+  "next_token": "page2"
+}

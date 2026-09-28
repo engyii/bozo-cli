@@ -1,0 +1,4 @@
+#!/bin/sh
+# Keep the installed bozo in sync with the repo. Enable with:
+#   git config core.hooksPath .githooks
+GOBIN="$HOME/.local/bin" go install ./cmd/bozo || echo "bozo hook: go install failed" >&2

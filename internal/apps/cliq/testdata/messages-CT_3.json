@@ -1,0 +1,5 @@
+{
+  "data": [
+    {"sender": {"name": "HR", "id": "3"}, "id": "m3", "time": 1790584200000, "type": "file", "content": {"file": {"name": "holidays.pdf", "type": "application/pdf"}}}
+  ]
+}

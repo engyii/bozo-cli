@@ -1,0 +1,35 @@
+# Release build: `git tag v0.1.0 && git push --tags` runs this in CI
+# (.github/workflows/release.yml). Needs BOZO_CLIENT_ID, BOZO_CLIENT_SECRET
+# and BOZO_CLIENT_DC in the environment: the OAuth client users log in through.
+version: 2
+project_name: bozo
+
+before:
+  hooks:
+    - go test ./...
+
+builds:
+  - main: ./cmd/bozo
+    binary: bozo
+    env: [CGO_ENABLED=0]
+    goos: [linux, darwin, windows]
+    goarch: [amd64, arm64]
+    flags: [-trimpath]
+    ldflags:
+      - -s -w
+      - -X main.version={{ .Version }}
+      - -X github.com/engyii/bozo-cli/internal/cli.builtinClientID={{ .Env.BOZO_CLIENT_ID }}
+      - -X github.com/engyii/bozo-cli/internal/cli.builtinClientSecret={{ .Env.BOZO_CLIENT_SECRET }}
+      - -X github.com/engyii/bozo-cli/internal/cli.builtinClientDC={{ .Env.BOZO_CLIENT_DC }}
+
+archives:
+  - formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+
+checksum:
+  name_template: checksums.txt
+
+release:
+  prerelease: auto # tags like v0.1.0-alpha.1 become GitHub pre-releases
